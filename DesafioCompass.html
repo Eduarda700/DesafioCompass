@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto AWS e Linux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset de margens e paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Corpo e fundo */
+        body, html {
+            height: 100%;
+            font-family: 'League Spartan', sans-serif;
+            background-color: #f5f3e7;
+        }
+
+        /* Cabeçalho fixo */
+        header {
+            background-color: #2b231d;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        /* Container para o texto de introdução */
+        .intro-text {
+            background-color: #fff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            margin-top: 120px; /* Adicionando margem superior para não ficar atrás do cabeçalho fixo */
+            max-width: 900px;
+            margin: 30px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .intro-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Container para os cabeçalhos da etapa */
+        .header-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            padding: 5px ;
+        }
+
+        h2 {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #2b231d;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        h2:hover {
+            color: #e5cd9f;
+            transform: scale(1.1);
+        }
+
+        /* Conteúdo das etapas */
+        .content {
+            display: none;
+            margin-top: 20px;
+            text-align: justify;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* Estilo para o texto e listas */
+        p {
+            line-height: 1.6;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Botão de interação */
+        .header-container h2 {
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            background-color: #e5cd9f;
+            color: #2b231d;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .header-container h2:hover {
+            background-color: #2b231d;
+            color: #e5cd9f;
+        }
+
+      
+    </style>
+</head>
+<body>
+    <header>
+        <h1> Projeto Compass</h1>
+    </header>
+
+    <!-- Texto de introdução abaixo do cabeçalho -->
+    <div class="intro-text">
+        <p>Este é um projeto proposto pela <strong>Compass</strong> com o objetivo de desenvolver e testar habilidades em Linux, AWS e automação de processos por meio da configuração de um ambiente de servidor web monitorado.</p>
+    </div>
+   
+    <div class="header-container">
+        <h2 onclick="showContent(1)">Etapa 1</h2>
+        <h2 onclick="showContent(2)">Etapa 2</h2>
+        <h2 onclick="showContent(3)">Etapa 3</h2>
+        <h2 onclick="showContent(4)">Etapa 4</h2>
+    </div>
+
+    <main>
+        <div id="content1" class="content">
+            <p>1. Criar uma VPC na AWS com:
+                <ul>
+                    <li>2 sub-redes públicas (para acesso externo).</li>
+                    <li>2 sub-redes privadas (para futuras expansões).</li>
+                    <li>Uma Internet Gateway conectada às sub-redes públicas.</li>
+                </ul>
+                2. Criar uma instância EC2 na AWS:
+                <ul>
+                    <li>Escolher uma AMI baseada em Linux (Ubuntu/Debian/Amazon Linux).</li>
+                    <li>Instalar na sub-rede pública criada anteriormente.</li>
+                    <li>Associar um Security Group que permita tráfego HTTP (porta 80) e SSH (porta 22, opcional).</li>
+                </ul>
+                3. Acessar a instância via SSH para realizar configurações futuras.
+            </p>
+        </div>
+
+        <div id="content2" class="content">
+            <p>1. Instalar o servidor Nginx na EC2.
+                2. Criar uma página HTML simples para ser exibida pelo servidor.
+                3. Configurar o Nginx para servir a página corretamente.
+                💡 <strong>Dicas para os alunos:</strong>
+                <ul>
+                    <li>Personalizar a página com informações sobre o projeto.</li>
+                    <li>Criar um serviço systemd para garantir que o Nginx reinicie automaticamente se parar.</li>
+                </ul>
+            </p>
+        </div>
+
+        <div id="content3" class="content">
+            <p>1. Criar um script em Bash ou Python para monitorar a disponibilidade do site.
+                2. O script deve:
+                <ul>
+                    <li>Verificar se o site responde corretamente a uma requisição HTTP.</li>
+                    <li>Criar logs das verificações em /var/log/monitoramento.log.</li>
+                    <li>Enviar uma notificação via Discord, Telegram ou Slack se detectar indisponibilidade.</li>
+                </ul>
+            </p>
+        </div>
+
+        <div id="content4" class="content">
+            <p>1. Testar a implementação: 
+                <ul>
+                    <li>Verificar se o site está acessível via navegador.</li>
+                    <li>Parar o Nginx e verificar se o script detecta e envia alertas corretamente.</li>
+                </ul>
+                2. Criar uma documentação no GitHub explicando:
+                <ul>
+                    <li>Como configurar o ambiente.</li>
+                    <li>Como instalar e configurar o servidor web.</li>
+                    <li>Como funciona o script de monitoramento.</li>
+                    <li>Como testar e validar a solução.</li>
+                </ul>
+                💡 <strong>Dicas para os alunos:</strong>
+                <ul>
+                    <li>Explicar os comandos usados na documentação.</li>
+                    <li>Compartilhar prints dos testes.</li>
+                </ul>
+            </p>
+        </div>
+    </main>
+
+    <script>
+        // Função para exibir o conteúdo correto
+        function showContent(etapa) {
+            // Esconde todos os conteúdos
+            var contents = document.querySelectorAll('.content');
+            contents.forEach(function(content) {
+                content.classList.remove('active');
+            });
+
+            // Exibe o conteúdo da etapa clicada
+            var activeContent = document.getElementById('content' + etapa);
+            activeContent.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+
+
