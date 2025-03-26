@@ -8,12 +8,21 @@ Criei da VPC com duas sub-redes públicas para acesso externo e duas sub-redes p
 
 ![VPC](https://github.com/user-attachments/assets/aa0728eb-19d5-47b4-875b-24cad890cf3f)
 
+- Criei um Security group para permitir acesso a o SSH, e configurei para permitir tráfego HTTP (porta 80) e SHH (porta 22)
+
+![IMG-20250326-WA0012.jpg](https://github.com/user-attachments/assets/4c3c3a66-3ecd-4c27-ab93-d4fe84a7f5de)
+
+
 Criei uma instância EC2 na AWS, e fiz as seguintes configurações:
 
 - Escolhi uma AMI, dentro as opções sugeridas eu escolhi AMI Ubuntu
+
+![IMG-20250326-WA0010.jpg](https://github.com/user-attachments/assets/fe2b718f-2ed1-4003-b833-2bd31e19bb81)
+
+
 - Instalei na sub-rede pública criada anteriormente.
 - Criei uma chave para conectar a instancia com o seu terminal via SSH, no meu caso realizei o projeto usando WSL ubuntu.
-- Associei um Security Group criado anteriormente, que permite tráfego HTTP (porta 80) e SSH (porta 22, opcional).
+- Associei um Security Group criado anteriormente.
 
 ## Etapa 2: Configuração do Servidor Web
 
