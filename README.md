@@ -15,12 +15,19 @@ Criei da VPC com duas sub-redes públicas para acesso externo e duas sub-redes p
 
 Criei uma instância EC2 na AWS, e fiz as seguintes configurações:
 
+- Adicionei Tags 
+
+![IMG-20250326-WA0014.jpg](https://github.com/user-attachments/assets/8efe5b90-2694-4bb4-900f-bb3373605f55)
+
 - Escolhi uma AMI, dentro as opções sugeridas eu escolhi AMI Ubuntu
 
 ![IMG-20250326-WA0010.jpg](https://github.com/user-attachments/assets/fe2b718f-2ed1-4003-b833-2bd31e19bb81)
 
 
-- Instalei na sub-rede pública criada anteriormente.
+- Selecionei a VPC selecionada anteriormente, instalei na sub-rede pública criada anteriormente e ativei a opçāo enable para ativar ip publico.
+
+![IMG-20250326-WA0013.jpg](https://github.com/user-attachments/assets/2a910dff-8626-4625-82be-1a4c2291ebb8)
+
 - Criei uma chave para conectar a instancia com o seu terminal via SSH, no meu caso realizei o projeto usando WSL ubuntu.
 - Associei um Security Group criado anteriormente.
 
