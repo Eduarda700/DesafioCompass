@@ -153,6 +153,8 @@ Após finalizar as configurações de ambiente, segui para o próximo passo.
 
    ```bash
    crontab -e
+   
+   * * * * * /usr/local/bin/monitor_nginx.sh >> /var/log/log_web.log 2>&1
    ```
 
 
