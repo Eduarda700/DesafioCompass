@@ -39,38 +39,124 @@ Após finalizar as configurações de ambiente, segui para o próximo passo.
 
 ## Etapa 2: Configuração do Servidor Web
 
-1. **Atualização do Sistema**
+1. **Atualização do Sistema**  
    - Realizei a busca por atualizações e as apliquei, seguindo boas práticas:
 
    ```bash
    sudo apt-get update
    sudo apt-get upgrade
+   ```
 
-   **Fiz a instalação do Nginx, iniciei e testei para verificar se a instalação foi sucessivel:**
-   
+2. **Instalação e Configuração do Nginx**  
+   - Fiz a instalação do Nginx, iniciei e testei para verificar se a instalação foi bem-sucedida:
+
    ```bash
-   sudo apt-get install ngnix
-   sudo systemctl start ngnix
-   sudo systemctl enable ngnix 
-    /var/www/html/index.nginx-debian.html
-   
-![inst_debian11_nginx_1-1-624x191](https://github.com/user-attachments/assets/b3bf26f8-75ce-4096-a2df-99c0f26ac16d)
+   sudo apt-get install nginx
+   sudo systemctl start nginx
+   sudo systemctl enable nginx
+   ```
 
-- Editei a pagina HTML padrão para ema com a descrição do projeto
-- 
-  cd /var/wwww/html/index.nginx-debian.html
-  sudo vi /index.nginx-debian.html
+   - Verifiquei a instalação acessando o arquivo padrão:  
+     `/var/www/html/index.nginx-debian.html`
+
+   ![inst_debian11_nginx_1-1-624x191](https://github.com/user-attachments/assets/b3bf26f8-75ce-4096-a2df-99c0f26ac16d)
+
+3. **Edição da Página HTML Padrão**  
+   - Editei a página HTML padrão para incluir uma descrição do projeto:
+
+   ```bash
+   cd /var/www/html
+   sudo vi index.nginx-debian.html
+   ```
 
 
 ### Etapa 3: Script de Monitoramento + Webhook
 
+- Criei um script que verifica a cada 1 minuto se o site está disponível, ou seja, se ele está rodando normalmente. Caso a aplicação não esteja funcionando, o script enviará uma notificação via Telegram informando a indisponibilidade do serviço.
 
-- Criar um script que verifique a cada 1 minutos se o site está disponível, ou seja se
-ele está rodando normalmente, caso a aplicação não esteja funcionando, o script
-deve envio uma notificação via algum desses canais, Discord, Telegram ou Slack,
-informando da indisponibilidade do serviço.
-- O script deve armazenar os logs da sua execução em um local no servidor, por
-exemplo: /var/log/meu_script.log
+   ```bash
+   cd ~
+   cd /usr/local/bin
+   sudo vi monitor_nginx.sh
+   ```
+
+- Programei uma função para enviar mensagens usando os tokens informados:
+
+   ```bash
+   #!/bin/bash
+
+   # Token do Bot do Telegram e chat ID
+   BOT_TOKEN="id do chat bot do telegram"
+   CHAT_ID="id do chat do telegram"
+
+   # Função para enviar a mensagem para o Telegram
+   send_telegram_message() {
+       local message=$1
+       curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" \
+           -d chat_id="$CHAT_ID" \
+           -d text="$message"
+   }
+   ```
+
+- Também programei para verificar se o Nginx está ativo. Caso não esteja, a função de envio de mensagem será acionada:
+
+   ```bash
+   # Verificar se o Nginx está ativo
+   if ! systemctl is-active --quiet nginx; then
+       send_telegram_message "❌ Nginx não está rodando!"
+       exit 1
+   fi
+   ```
+
+- Programei para localizar o arquivo de log de erros do Nginx e verificar os erros mais recentes. Se encontrados, a função de envio de mensagem será executada:
+
+   ```bash
+   # Local do arquivo error.log do Nginx
+   error_log="/var/log/nginx/error.log"
+
+   # Verificar se houve erros recentes no log
+   recent_errors=$(tail -n 20 "$error_log" | grep -i "error")
+
+   if [[ -n "$recent_errors" ]]; then
+       message="🚨 Erros encontrados no log de erros do Nginx:\n$recent_errors"
+       send_telegram_message "$message"
+       exit 1
+   fi
+   ```
+
+- Programei para localizar o arquivo de log de acessos do Nginx. Se nenhum acesso for encontrado ou se houver acessos recentes, ambos serão registrados:
+
+   ```bash
+   # Local do arquivo access.log do Nginx
+   access_log="/var/log/nginx/access.log"
+
+   # Verificar acessos no último minuto
+   recent_access=$(tail -n 50 "$access_log" | grep -i "GET")
+
+   if [[ -z "$recent_access" ]]; then
+       # Se não houver acessos recentes, você pode decidir notificar aqui.
+       echo "❗ Nenhum acesso recente detectado."
+   else
+       # Caso haja acessos recentes, você pode decidir não fazer nada ou apenas registrar no log.
+       echo "🔹 Acessos recentes detectados no Nginx."
+   fi
+   ```
+
+- Criei um arquivo de log no servidor local para o script armazenar logs da sua execução:
+
+   ```bash
+   cd /var/log
+   sudo cat monitor.log
+   ```
+
+- Configurei o cron para que o script `monitor_nginx.sh` seja executado a cada 1 minuto e registre sua execução no arquivo de log anteriormente criado:
+
+   ```bash
+   crontab -e
+   ```
+
+
+
 
 ### Etapa 4: Testes e Documentação
 
