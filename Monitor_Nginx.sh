@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Token do Bot do Telegram e chat ID
-BOT_TOKEN="7639662233:AAEIhCkUj60xeFVwHNbFcp6eT3BEPrnpXIY"
-CHAT_ID="7679985699"
+BOT_TOKEN="Bot token"
+CHAT_ID="chat id"
 
 # Função para enviar a mensagem para o Telegram
 send_telegram_message() {
